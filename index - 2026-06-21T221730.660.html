@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Animal AI — Scan any animal. Collect them all.</title>
+<meta name="description" content="Point your camera at any creature and AI identifies the species in seconds — then turns every find into a collectible trading card.">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;background:#0D1117}
+  body{font-family:'Plus Jakarta Sans',-apple-system,system-ui,sans-serif;color:#fff;overflow-x:hidden}
+  a{text-decoration:none;color:inherit}
+  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+  @keyframes glowpulse{0%,100%{opacity:.5}50%{opacity:.85}}
+  @keyframes scanmove{0%{top:14%}50%{top:82%}100%{top:14%}}
+
+  /* phone mockups (replace old broken iframes) */
+  .phone{position:relative;width:300px;aspect-ratio:416/822;border-radius:46px;background:#05070a;border:14px solid #0a0c10;box-shadow:0 40px 100px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.05);overflow:hidden;flex:none}
+  .phone .notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:100px;height:26px;background:#000;border-radius:18px;z-index:6}
+  .screen{position:absolute;inset:0;padding:40px 16px 18px;display:flex;flex-direction:column;gap:11px;background:radial-gradient(120% 60% at 50% 0,#11161d,#05070a 70%)}
+  .scr-top{display:flex;align-items:center;justify-content:space-between;color:#5b6675;font-size:10px;font-weight:700;letter-spacing:.4px}
+  .pill{display:inline-flex;align-items:center;gap:5px;border-radius:100px;padding:4px 9px;font-size:9px;font-weight:800;letter-spacing:.6px;text-transform:uppercase}
+
+  a.focusable:focus-visible{outline:2px solid #34D399;outline-offset:3px;border-radius:8px}
+
+  @media (max-width:560px){
+    .phone{width:262px;border-width:12px}
+    .screen{padding:34px 13px 14px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important}
+  }
+</style>
+</head>
+<body>
+
+<div style="background:#0D1117">
+
+  <!-- ░░░░░ NAV ░░░░░ -->
+  <div style="position:sticky;top:0;z-index:100;backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);background:rgba(13,17,23,0.72);border-bottom:1px solid rgba(255,255,255,0.06)">
+    <div style="max-width:1180px;margin:0 auto;padding:14px 28px;display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:12px;flex:none">
+        <img src="logo.png" alt="Animal AI logo" width="40" height="40" style="width:40px;height:40px;border-radius:12px;display:block;flex:none">
+        <span style="font-size:18px;font-weight:800;letter-spacing:-0.3px;white-space:nowrap">Animal AI</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:30px;font-size:14px;font-weight:600;color:#A0AEC0">
+        <a class="focusable" href="#features" style="cursor:pointer">Features</a>
+        <a class="focusable" href="#rarity" style="cursor:pointer">Rarity</a>
+        <a class="focusable" href="#why" style="cursor:pointer">Why Animal AI</a>
+        <a class="focusable" href="#download" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#16A34A,#22C55E);color:#06281a;font-size:14px;font-weight:800;padding:10px 18px;border-radius:12px;cursor:pointer;box-shadow:0 8px 22px rgba(34,197,94,0.3)">Download</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ░░░░░ HERO ░░░░░ -->
+  <div style="position:relative;overflow:hidden">
+    <div style="position:absolute;top:-180px;left:50%;transform:translateX(-50%);width:1200px;height:900px;border-radius:50%;background:radial-gradient(closest-side,rgba(34,197,94,0.18),transparent);filter:blur(30px);animation:glowpulse 6s ease-in-out infinite;pointer-events:none"></div>
+    <div style="max-width:1180px;margin:0 auto;padding:72px 28px 40px;display:flex;flex-wrap:wrap;align-items:center;gap:48px;justify-content:center;position:relative">
+      <div style="flex:1 1 460px;max-width:560px">
+        <div style="display:inline-flex;align-items:center;gap:9px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.28);border-radius:100px;padding:7px 14px;margin-bottom:24px">
+          <span style="width:7px;height:7px;border-radius:50%;background:#34D399"></span>
+          <span style="font-size:12.5px;font-weight:800;letter-spacing:1.5px;color:#34D399;text-transform:uppercase;white-space:nowrap">AI Wildlife Scanner</span>
+        </div>
+        <h1 style="font-size:clamp(40px,6vw,68px);font-weight:800;line-height:1.02;letter-spacing:-2px;margin:0">Scan any animal.<br>Collect them <span style="background:linear-gradient(120deg,#34D399,#0E7490);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">all.</span></h1>
+        <p style="font-size:clamp(16px,2vw,20px);line-height:1.55;color:#A0AEC0;margin:24px 0 0;max-width:480px">Point your camera at any creature and our AI identifies the species in seconds — then turns every find into a collectible trading card.</p>
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:34px">
+          <!-- TODO: replace href="#" with your App Store URL once live -->
+          <a class="focusable" href="#" style="display:inline-flex;align-items:center;gap:13px;background:#000;border:1px solid rgba(255,255,255,0.18);border-radius:15px;padding:13px 22px;cursor:pointer">
+            <svg viewBox="0 0 384 512" width="26" height="26" fill="#fff" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C61.5 141.2 0 184.4 0 272.1c0 25.9 4.7 52.7 14.2 80.3 12.6 36.4 58 125.6 105.4 124.1 24.8-.6 42.3-17.6 74.5-17.6 31.3 0 47.5 17.6 76.4 17.6 47.8-.7 88.8-81.7 100.8-118.2-64.1-30.2-60.9-88.5-60.9-89.6zM254.6 84.4c30.9-36.7 28.1-70.1 27.2-82.1-26.4 1.5-56.9 18-74.3 38.3-19.2 21.7-30.5 48.5-28.1 77.5 28.5 2.2 54.5-12.5 75.2-33.7z"/></svg>
+            <div style="text-align:left;line-height:1.05"><div style="font-size:11px;color:#cfd6df">Download on the</div><div style="font-size:21px;font-weight:600">App Store</div></div>
+          </a>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:22px;font-size:13px;color:#5b6675;font-weight:600"><span style="color:#34D399;font-weight:900">✓</span> 3 free scans — no account needed</div>
+      </div>
+      <div style="flex:0 0 auto;position:relative">
+        <div style="position:absolute;inset:-30px;border-radius:50%;background:radial-gradient(closest-side,rgba(192,132,252,0.22),transparent);filter:blur(24px);z-index:0"></div>
+        <div class="phone" style="position:relative;z-index:1;animation:floaty 6s ease-in-out infinite">
+          <div class="notch"></div>
+          <!-- RESULT SCREEN -->
+          <div class="screen">
+            <div class="scr-top"><span>Animal AI</span><span>9:41</span></div>
+            <div style="border-radius:18px;overflow:hidden;background:linear-gradient(160deg,#13351f,#0a1a12);border:1px solid rgba(52,211,153,.25);padding:14px;display:flex;flex-direction:column;gap:9px;flex:none">
+              <div style="height:118px;border-radius:12px;background:radial-gradient(120% 90% at 30% 20%,#2c4d34,#10241a);display:flex;align-items:center;justify-content:center;font-size:54px">🦊</div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div><div style="font-size:15px;font-weight:800">Red Fox</div><div style="font-size:10px;color:#8a96a4;font-style:italic">Vulpes vulpes</div></div>
+                <span class="pill" style="background:rgba(192,132,252,.16);color:#C084FC;border:1px solid #C084FC">Epic</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:7px">
+              <div style="flex:1;background:#1C2128;border-radius:11px;padding:9px 10px"><div style="font-size:9px;color:#5b6675;font-weight:700">CONFIDENCE</div><div style="font-size:14px;font-weight:800;color:#34D399">94%</div></div>
+              <div style="flex:1;background:#1C2128;border-radius:11px;padding:9px 10px"><div style="font-size:9px;color:#5b6675;font-weight:700">CATEGORY</div><div style="font-size:14px;font-weight:800">Mammals</div></div>
+            </div>
+            <div style="background:#1C2128;border-radius:11px;padding:10px 11px;font-size:10.5px;color:#A0AEC0;line-height:1.5">A small omnivorous canid found across forests, grasslands and urban edges worldwide.</div>
+            <div style="margin-top:auto;background:linear-gradient(135deg,#16A34A,#22C55E);color:#06281a;text-align:center;font-size:12px;font-weight:800;padding:12px;border-radius:13px">Add to collection</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ░░░░░ STAT STRIP ░░░░░ -->
+  <div style="max-width:1180px;margin:0 auto;padding:24px 28px 8px">
+    <div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center">
+      <div style="display:flex;align-items:center;gap:10px;background:#1C2128;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:16px 26px"><span style="font-size:26px;font-weight:800;color:#34D399">500+</span><span style="font-size:14px;color:#A0AEC0;font-weight:600">species</span></div>
+      <div style="display:flex;align-items:center;gap:10px;background:#1C2128;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:16px 26px"><span style="font-size:26px;font-weight:800;color:#fff">8</span><span style="font-size:14px;color:#A0AEC0;font-weight:600">categories</span></div>
+      <div style="display:flex;align-items:center;gap:10px;background:#1C2128;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:16px 26px"><span style="font-size:26px;font-weight:800;color:#FBBF24">5</span><span style="font-size:14px;color:#A0AEC0;font-weight:600">rarity tiers</span></div>
+      <div style="display:flex;align-items:center;gap:10px;background:#1C2128;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:16px 26px"><span style="font-size:26px;font-weight:800;color:#38BDF8">~3s</span><span style="font-size:14px;color:#A0AEC0;font-weight:600">per scan</span></div>
+    </div>
+  </div>
+
+  <!-- ░░░░░ HOW IT WORKS ░░░░░ -->
+  <div id="how" style="max-width:1180px;margin:0 auto;padding:80px 28px;display:flex;flex-wrap:wrap;align-items:center;gap:56px;justify-content:center">
+    <div style="flex:1 1 440px;max-width:520px">
+      <div style="font-size:13px;font-weight:800;letter-spacing:2px;color:#34D399;text-transform:uppercase">How it works</div>
+      <h2 style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-1.2px;line-height:1.1;margin:14px 0 8px">From snapshot to species<br>in three taps.</h2>
+      <div style="display:flex;flex-direction:column;gap:18px;margin-top:34px">
+        <div style="display:flex;gap:18px;align-items:flex-start">
+          <div style="width:46px;height:46px;flex:none;border-radius:14px;background:linear-gradient(135deg,#166534,#22C55E);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#06281a">1</div>
+          <div><div style="font-size:18px;font-weight:800">Point &amp; capture</div><div style="font-size:14.5px;color:#A0AEC0;line-height:1.5;margin-top:4px">Aim at any animal — wild or a pet. Tap the shutter, or pick a photo from your gallery.</div></div>
+        </div>
+        <div style="display:flex;gap:18px;align-items:flex-start">
+          <div style="width:46px;height:46px;flex:none;border-radius:14px;background:linear-gradient(135deg,#0E7490,#38BDF8);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#04222b">2</div>
+          <div><div style="font-size:18px;font-weight:800">AI identifies it</div><div style="font-size:14.5px;color:#A0AEC0;line-height:1.5;margin-top:4px">Claude vision recognises the species, with a confidence score, alternatives and a full profile.</div></div>
+        </div>
+        <div style="display:flex;gap:18px;align-items:flex-start">
+          <div style="width:46px;height:46px;flex:none;border-radius:14px;background:linear-gradient(135deg,#A855F7,#C084FC);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#2e1065">3</div>
+          <div><div style="font-size:18px;font-weight:800">Collect the card</div><div style="font-size:14.5px;color:#A0AEC0;line-height:1.5;margin-top:4px">Each discovery is graded by rarity and added to your collection. Catch ’em all.</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="flex:0 0 auto;position:relative">
+      <div style="position:absolute;inset:-30px;border-radius:50%;background:radial-gradient(closest-side,rgba(34,197,94,0.2),transparent);filter:blur(24px);z-index:0"></div>
+      <div class="phone" style="position:relative;z-index:1">
+        <div class="notch"></div>
+        <!-- SCANNER SCREEN -->
+        <div class="screen" style="padding:0">
+          <div style="position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 40%,#16241c,#05070a 75%)"></div>
+          <div style="position:absolute;top:46px;left:0;right:0;text-align:center;font-size:11px;font-weight:800;letter-spacing:1.5px;color:#34D399;text-transform:uppercase">Scanning…</div>
+          <div style="position:absolute;top:14%;bottom:24%;left:12%;right:12%;border-radius:22px;border:2px solid rgba(52,211,153,.5);box-shadow:0 0 30px rgba(52,211,153,.2) inset">
+            <span style="position:absolute;top:-2px;left:-2px;width:26px;height:26px;border-top:3px solid #34D399;border-left:3px solid #34D399;border-radius:10px 0 0 0"></span>
+            <span style="position:absolute;top:-2px;right:-2px;width:26px;height:26px;border-top:3px solid #34D399;border-right:3px solid #34D399;border-radius:0 10px 0 0"></span>
+            <span style="position:absolute;bottom:-2px;left:-2px;width:26px;height:26px;border-bottom:3px solid #34D399;border-left:3px solid #34D399;border-radius:0 0 0 10px"></span>
+            <span style="position:absolute;bottom:-2px;right:-2px;width:26px;height:26px;border-bottom:3px solid #34D399;border-right:3px solid #34D399;border-radius:0 0 10px 0"></span>
+            <div style="position:absolute;font-size:70px;left:50%;top:50%;transform:translate(-50%,-50%);opacity:.85">🦉</div>
+            <div style="position:absolute;left:8px;right:8px;height:2px;background:linear-gradient(90deg,transparent,#34D399,transparent);box-shadow:0 0 12px #34D399;animation:scanmove 2.6s ease-in-out infinite"></div>
+          </div>
+          <div style="position:absolute;bottom:34px;left:50%;transform:translateX(-50%);width:62px;height:62px;border-radius:50%;background:#fff;border:5px solid rgba(255,255,255,.25)"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ░░░░░ RARITY (signature) ░░░░░ -->
+  <div id="rarity" style="position:relative;overflow:hidden;background:linear-gradient(180deg,#0D1117,#11091c 50%,#0D1117)">
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:1100px;height:800px;border-radius:50%;background:radial-gradient(closest-side,rgba(192,132,252,0.14),rgba(251,191,36,0.06) 60%,transparent);filter:blur(30px);pointer-events:none"></div>
+    <div style="max-width:1180px;margin:0 auto;padding:80px 28px;display:flex;flex-wrap:wrap;align-items:center;gap:56px;justify-content:center;position:relative">
+      <div style="flex:0 0 auto;position:relative">
+        <div class="phone" style="position:relative;z-index:1">
+          <div class="notch"></div>
+          <!-- COLLECTION SCREEN -->
+          <div class="screen">
+            <div class="scr-top"><span>Collection</span><span>24 / 500</span></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div style="background:#1C2128;border:1px solid #9ca3af;border-radius:13px;padding:11px;display:flex;flex-direction:column;align-items:center;gap:5px"><div style="font-size:30px">🐿️</div><div style="font-size:10px;font-weight:800">Squirrel</div><span class="pill" style="background:rgba(156,163,175,.18);color:#cbd2da">Common</span></div>
+              <div style="background:#1C2128;border:1px solid #34D399;border-radius:13px;padding:11px;display:flex;flex-direction:column;align-items:center;gap:5px;box-shadow:0 0 14px rgba(52,211,153,.18)"><div style="font-size:30px">🦝</div><div style="font-size:10px;font-weight:800">Raccoon</div><span class="pill" style="background:rgba(52,211,153,.16);color:#34D399">Uncommon</span></div>
+              <div style="background:#1C2128;border:1px solid #38BDF8;border-radius:13px;padding:11px;display:flex;flex-direction:column;align-items:center;gap:5px;box-shadow:0 0 14px rgba(56,189,248,.2)"><div style="font-size:30px">🦅</div><div style="font-size:10px;font-weight:800">Hawk</div><span class="pill" style="background:rgba(56,189,248,.16);color:#38BDF8">Rare</span></div>
+              <div style="background:linear-gradient(150deg,rgba(251,191,36,.14),#1C2128 70%);border:1.5px solid #FBBF24;border-radius:13px;padding:11px;display:flex;flex-direction:column;align-items:center;gap:5px;box-shadow:0 0 20px rgba(251,191,36,.3)"><div style="font-size:30px">🐆</div><div style="font-size:10px;font-weight:800;color:#FBBF24">Snow Leopard</div><span class="pill" style="background:rgba(251,191,36,.18);color:#FBBF24">Legendary</span></div>
+              <div style="background:#12161c;border:1px dashed rgba(255,255,255,.12);border-radius:13px;padding:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:86px;color:#3a4450"><div style="font-size:26px">？</div><div style="font-size:9px;font-weight:700">Undiscovered</div></div>
+              <div style="background:#12161c;border:1px dashed rgba(255,255,255,.12);border-radius:13px;padding:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:86px;color:#3a4450"><div style="font-size:26px">？</div><div style="font-size:9px;font-weight:700">Undiscovered</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="flex:1 1 440px;max-width:520px">
+        <div style="font-size:13px;font-weight:800;letter-spacing:2px;color:#FBBF24;text-transform:uppercase">Gotta find 'em all</div>
+        <h2 style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-1.2px;line-height:1.1;margin:14px 0 8px">Every find is a<br>trading card.</h2>
+        <p style="font-size:16px;line-height:1.55;color:#A0AEC0;margin:0 0 26px">From the everyday to the once-in-a-lifetime, each species is graded across five rarity tiers. The rarer the animal, the brighter the card glows.</p>
+        <div style="display:flex;flex-direction:column;gap:11px">
+          <div style="display:flex;align-items:center;gap:14px;background:#1C2128;border:1px solid #9ca3af;border-radius:14px;padding:13px 16px"><span style="width:12px;height:12px;border-radius:3px;background:#9ca3af"></span><span style="font-size:15px;font-weight:800;flex:1">Common</span><span style="font-size:12.5px;color:#5b6675;font-weight:600">House sparrow, mouse…</span></div>
+          <div style="display:flex;align-items:center;gap:14px;background:#1C2128;border:1px solid #34D399;border-radius:14px;padding:13px 16px;box-shadow:0 0 16px rgba(52,211,153,0.18)"><span style="width:12px;height:12px;border-radius:3px;background:#34D399"></span><span style="font-size:15px;font-weight:800;flex:1;color:#34D399">Uncommon</span><span style="font-size:12.5px;color:#5b6675;font-weight:600">Roe deer, robin…</span></div>
+          <div style="display:flex;align-items:center;gap:14px;background:#1C2128;border:1px solid #38BDF8;border-radius:14px;padding:13px 16px;box-shadow:0 0 18px rgba(56,189,248,0.22)"><span style="width:12px;height:12px;border-radius:3px;background:#38BDF8"></span><span style="font-size:15px;font-weight:800;flex:1;color:#38BDF8">Rare</span><span style="font-size:12.5px;color:#5b6675;font-weight:600">Snowy owl, sea turtle…</span></div>
+          <div style="display:flex;align-items:center;gap:14px;background:#1C2128;border:1px solid #C084FC;border-radius:14px;padding:13px 16px;box-shadow:0 0 20px rgba(192,132,252,0.28)"><span style="width:12px;height:12px;border-radius:3px;background:#C084FC"></span><span style="font-size:15px;font-weight:800;flex:1;color:#C084FC">Epic</span><span style="font-size:12.5px;color:#5b6675;font-weight:600">Red fox, gray wolf…</span></div>
+          <div style="display:flex;align-items:center;gap:14px;background:linear-gradient(120deg,rgba(251,191,36,0.14),#1C2128 70%);border:1.5px solid #FBBF24;border-radius:14px;padding:13px 16px;box-shadow:0 0 26px rgba(251,191,36,0.32)"><span style="width:12px;height:12px;border-radius:3px;background:#FBBF24"></span><span style="font-size:15px;font-weight:800;flex:1;color:#FBBF24">Legendary</span><span style="font-size:12.5px;color:#8a7a4a;font-weight:600">Snow leopard…</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ░░░░░ FEATURES ░░░░░ -->
+  <div id="features" style="max-width:1180px;margin:0 auto;padding:80px 28px">
+    <div style="text-align:center;max-width:600px;margin:0 auto 48px">
+      <div style="font-size:13px;font-weight:800;letter-spacing:2px;color:#34D399;text-transform:uppercase">Everything you need</div>
+      <h2 style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-1.2px;line-height:1.1;margin:14px 0 0">A pocket field guide<br>that plays like a game.</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px">
+      <div style="background:#1C2128;border:1px solid rgba(255,255,255,0.06);border-radius:22px;padding:26px"><div style="width:50px;height:50px;border-radius:15px;background:linear-gradient(135deg,#166534,#22C55E);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:18px">⚡</div><div style="font-size:18px;font-weight:800">Unlimited scans</div><div style="font-size:14px;color:#A0AEC0;line-height:1.55;margin-top:8px">Identify as many animals as you want with Pro — no daily caps, ever.</div></div>
+      <div style="background:#1C2128;border:1px solid rgba(255,255,255,0.06);border-radius:22px;padding:26px"><div style="width:50px;height:50px;border-radius:15px;background:linear-gradient(135deg,#0E7490,#38BDF8);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:18px">📖</div><div style="font-size:18px;font-weight:800">Full species profiles</div><div style="font-size:14px;color:#A0AEC0;line-height:1.55;margin-top:8px">Diet, habitat, conservation status and fun facts for every creature you meet.</div></div>
+      <div style="background:#1C2128;border:1px solid rgba(255,255,255,0.06);border-radius:22px;padding:26px"><div style="width:50px;height:50px;border-radius:15px;background:linear-gradient(135deg,#A855F7,#C084FC);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:18px">✨</div><div style="font-size:18px;font-weight:800">Transparent AI</div><div style="font-size:14px;color:#A0AEC0;line-height:1.55;margin-top:8px">See the confidence score, alternatives, and exactly why the AI made its call.</div></div>
+      <div style="background:#1C2128;border:1px solid rgba(255,255,255,0.06);border-radius:22px;padding:26px"><div style="width:50px;height:50px;border-radius:15px;background:linear-gradient(135deg,#D97706,#FBBF24);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:18px">🏅</div><div style="font-size:18px;font-weight:800">Achievements &amp; streaks</div><div style="font-size:14px;color:#A0AEC0;line-height:1.55;margin-top:8px">Daily streaks, collection milestones and hidden badges to chase as your dex grows.</div></div>
+      <div style="background:#1C2128;border:1px solid rgba(255,255,255,0.06);border-radius:22px;padding:26px"><div style="width:50px;height:50px;border-radius:15px;background:linear-gradient(135deg,#166534,#0E7490);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:18px">🗂️</div><div style="font-size:18px;font-weight:800">Your collection, forever</div><div style="font-size:14px;color:#A0AEC0;line-height:1.55;margin-top:8px">Filter by category, sort by rarity, and revisit every species you’ve found.</div></div>
+      <div style="background:#1C2128;border:1px solid rgba(255,255,255,0.06);border-radius:22px;padding:26px"><div style="width:50px;height:50px;border-radius:15px;background:linear-gradient(135deg,#22C55E,#34D399);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:18px">🐾</div><div style="font-size:18px;font-weight:800">Pets count too</div><div style="font-size:14px;color:#A0AEC0;line-height:1.55;margin-top:8px">Recognises breeds — your Border Collie gets its own card, not just “dog”.</div></div>
+    </div>
+  </div>
+
+  <!-- ░░░░░ LEGENDARY HIGHLIGHT ░░░░░ -->
+  <div style="position:relative;overflow:hidden;background:linear-gradient(180deg,#0D1117,#1a1305 50%,#0D1117)">
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:1000px;height:760px;border-radius:50%;background:radial-gradient(closest-side,rgba(251,191,36,0.16),transparent);filter:blur(34px);animation:glowpulse 5s ease-in-out infinite;pointer-events:none"></div>
+    <div style="max-width:1180px;margin:0 auto;padding:80px 28px;display:flex;flex-wrap:wrap;align-items:center;gap:56px;justify-content:center;position:relative">
+      <div style="flex:1 1 420px;max-width:500px">
+        <div style="font-size:13px;font-weight:800;letter-spacing:2px;color:#FBBF24;text-transform:uppercase">The rarest tier</div>
+        <h2 style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-1.2px;line-height:1.1;margin:14px 0 8px">Hunt the<br>legendaries.</h2>
+        <p style="font-size:16px;line-height:1.6;color:#A0AEC0;margin:0">Find a one-in-a-thousand species and the app erupts — gold glow, confetti and a card few collectors will ever hold. Legendary sightings are the bragging rights of every true naturalist.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:28px">
+          <div style="display:flex;align-items:center;gap:9px;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.35);border-radius:100px;padding:10px 18px"><span style="font-size:16px">👑</span><span style="font-size:14px;font-weight:700;color:#FBBF24">Gold-tier glow</span></div>
+          <div style="display:flex;align-items:center;gap:9px;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.35);border-radius:100px;padding:10px 18px"><span style="font-size:16px">🎉</span><span style="font-size:14px;font-weight:700;color:#FBBF24">Confetti celebration</span></div>
+        </div>
+      </div>
+      <div style="flex:0 0 auto;position:relative">
+        <div style="position:absolute;inset:-30px;border-radius:50%;background:radial-gradient(closest-side,rgba(251,191,36,0.28),transparent);filter:blur(26px);z-index:0"></div>
+        <div class="phone" style="position:relative;z-index:1">
+          <div class="notch"></div>
+          <!-- LEGENDARY DETAIL SCREEN -->
+          <div class="screen" style="background:radial-gradient(120% 70% at 50% 0,#241a06,#05070a 72%)">
+            <div class="scr-top"><span style="color:#FBBF24">★ Legendary</span><span>9:41</span></div>
+            <div style="border-radius:18px;overflow:hidden;border:1.5px solid #FBBF24;background:linear-gradient(160deg,rgba(251,191,36,.16),#120d02);padding:14px;display:flex;flex-direction:column;gap:9px;box-shadow:0 0 30px rgba(251,191,36,.3)">
+              <div style="height:130px;border-radius:12px;background:radial-gradient(120% 90% at 30% 20%,#3a2c08,#181203);display:flex;align-items:center;justify-content:center;font-size:60px">🐆</div>
+              <div style="text-align:center"><div style="font-size:16px;font-weight:800;color:#FBBF24">Snow Leopard</div><div style="font-size:10px;color:#9a8a5a;font-style:italic">Panthera uncia</div></div>
+              <div style="display:flex;justify-content:center;gap:5px;font-size:13px;color:#FBBF24">★★★★★</div>
+            </div>
+            <div style="display:flex;gap:7px">
+              <div style="flex:1;background:#1C2128;border-radius:11px;padding:9px 10px"><div style="font-size:9px;color:#5b6675;font-weight:700">HABITAT</div><div style="font-size:11px;font-weight:800">Alpine</div></div>
+              <div style="flex:1;background:#1C2128;border-radius:11px;padding:9px 10px"><div style="font-size:9px;color:#5b6675;font-weight:700">STATUS</div><div style="font-size:11px;font-weight:800;color:#FBBF24">Vulnerable</div></div>
+            </div>
+            <div style="margin-top:auto;text-align:center;font-size:10px;color:#9a8a5a;font-weight:700;letter-spacing:.5px">🎉 ADDED TO YOUR COLLECTION 🎉</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ░░░░░ ACHIEVEMENTS ░░░░░ -->
+  <div style="max-width:1180px;margin:0 auto;padding:80px 28px;display:flex;flex-wrap:wrap;align-items:center;gap:56px;justify-content:center">
+    <div style="flex:0 0 auto;position:relative">
+      <div style="position:absolute;inset:-30px;border-radius:50%;background:radial-gradient(closest-side,rgba(251,191,36,0.16),transparent);filter:blur(24px);z-index:0"></div>
+      <div class="phone" style="position:relative;z-index:1">
+        <div class="notch"></div>
+        <!-- ACHIEVEMENTS SCREEN -->
+        <div class="screen">
+          <div class="scr-top"><span>Achievements</span><span>Lv. 7</span></div>
+          <div style="background:#1C2128;border-radius:13px;padding:11px 12px;display:flex;flex-direction:column;gap:7px">
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:#A0AEC0;font-weight:700"><span>Explorer level</span><span style="color:#34D399">7</span></div>
+            <div style="height:8px;border-radius:6px;background:#0d1117;overflow:hidden"><div style="width:64%;height:100%;background:linear-gradient(90deg,#16A34A,#34D399)"></div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;background:#1C2128;border-radius:13px;padding:11px 12px"><div style="width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#166534,#22C55E);display:flex;align-items:center;justify-content:center;font-size:17px">🔥</div><div style="flex:1"><div style="font-size:11px;font-weight:800">7-day streak</div><div style="font-size:9px;color:#5b6675">Scan every day</div></div><span style="color:#34D399;font-size:14px">✓</span></div>
+          <div style="display:flex;align-items:center;gap:10px;background:#1C2128;border-radius:13px;padding:11px 12px"><div style="width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#0E7490,#38BDF8);display:flex;align-items:center;justify-content:center;font-size:17px">🦅</div><div style="flex:1"><div style="font-size:11px;font-weight:800">First rare find</div><div style="font-size:9px;color:#5b6675">Collect a rare species</div></div><span style="color:#34D399;font-size:14px">✓</span></div>
+          <div style="display:flex;align-items:center;gap:10px;background:#12161c;border:1px dashed rgba(255,255,255,.1);border-radius:13px;padding:11px 12px;opacity:.6"><div style="width:34px;height:34px;border-radius:10px;background:#1C2128;display:flex;align-items:center;justify-content:center;font-size:17px">🔒</div><div style="flex:1"><div style="font-size:11px;font-weight:800">Legendary hunter</div><div style="font-size:9px;color:#5b6675">Find a legendary</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div style="flex:1 1 420px;max-width:500px">
+      <div style="font-size:13px;font-weight:800;letter-spacing:2px;color:#34D399;text-transform:uppercase">Keep coming back</div>
+      <h2 style="font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-1.2px;line-height:1.1;margin:14px 0 8px">Level up your<br>naturalist journey.</h2>
+      <p style="font-size:16px;line-height:1.6;color:#A0AEC0;margin:0 0 24px">Streaks for daily explorers, milestones for collection size, and hidden badges for the truly dedicated. There’s always one more discovery to chase.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div style="background:#1C2128;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:18px"><div style="font-size:18px;font-weight:800;color:#FBBF24">Daily streaks</div><div style="font-size:13px;color:#A0AEC0;font-weight:600;margin-top:3px">Reward the habit</div></div>
+        <div style="background:#1C2128;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:18px"><div style="font-size:18px;font-weight:800;color:#34D399">Hidden badges</div><div style="font-size:13px;color:#A0AEC0;font-weight:600;margin-top:3px">For the dedicated</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ░░░░░ WHY ANIMAL AI (replaces fabricated reviews) ░░░░░ -->
+  <div id="why" style="max-width:1180px;margin:0 auto;padding:40px 28px 80px">
+    <div style="text-align:center;max-width:620px;margin:0 auto 44px">
+      <div style="font-size:13px;font-weight:800;letter-spacing:2px;color:#34D399;text-transform:uppercase">Why Animal AI</div>
+      <div style="font-size:clamp(26px,3.5vw,38px);font-weight:800;letter-spacing:-1px;margin-top:10px;line-height:1.1">Built different from<br>the field-guide clones.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px">
+      <div style="background:#1C2128;border:1px solid rgba(255,255,255,0.06);border-radius:22px;padding:28px"><div style="width:50px;height:50px;border-radius:15px;background:linear-gradient(135deg,#166534,#22C55E);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:18px">🧠</div><div style="font-size:18px;font-weight:800">Powered by Claude vision</div><p style="font-size:14.5px;line-height:1.6;color:#A0AEC0;margin:8px 0 0">Every photo is read by one of the most capable vision models available — not a thin image-match lookup. That’s why it handles odd angles, juveniles and lookalikes.</p></div>
+      <div style="background:#1C2128;border:1px solid rgba(255,255,255,0.06);border-radius:22px;padding:28px"><div style="width:50px;height:50px;border-radius:15px;background:linear-gradient(135deg,#0E7490,#38BDF8);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:18px">🔒</div><div style="font-size:18px;font-weight:800">Your photos stay yours</div><p style="font-size:14.5px;line-height:1.6;color:#A0AEC0;margin:8px 0 0">Images are sent only to identify the animal and are never used to train AI models. Start with no account — just open the app and scan.</p></div>
+      <div style="background:#1C2128;border:1px solid rgba(255,255,255,0.06);border-radius:22px;padding:28px"><div style="width:50px;height:50px;border-radius:15px;background:linear-gradient(135deg,#A855F7,#C084FC);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:18px">🤝</div><div style="font-size:18px;font-weight:800">Honest by design</div><p style="font-size:14.5px;line-height:1.6;color:#A0AEC0;margin:8px 0 0">An independent app with no inflated download counts and no fake five-star reviews. It shows you its confidence and earns trust on accuracy, not hype.</p></div>
+    </div>
+  </div>
+
+  <!-- ░░░░░ FINAL CTA ░░░░░ -->
+  <div id="download" style="position:relative;overflow:hidden">
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:1100px;height:700px;border-radius:50%;background:radial-gradient(closest-side,rgba(34,197,94,0.2),transparent);filter:blur(34px);pointer-events:none"></div>
+    <div style="max-width:760px;margin:0 auto;padding:90px 28px;text-align:center;position:relative">
+      <img src="logo.png" alt="Animal AI logo" width="96" height="96" style="width:96px;height:96px;border-radius:26px;display:block;margin:0 auto 28px;box-shadow:0 24px 60px rgba(34,197,94,0.4);animation:floaty 5s ease-in-out infinite">
+      <h2 style="font-size:clamp(34px,5vw,56px);font-weight:800;letter-spacing:-1.5px;line-height:1.05;margin:0">Start your collection<br>for free.</h2>
+      <p style="font-size:18px;color:#A0AEC0;line-height:1.55;margin:20px auto 0;max-width:460px">3 free scans, no account required. Go Pro anytime for unlimited wildlife discovery.</p>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:16px;margin-top:36px">
+        <!-- TODO: replace href="#" with your App Store URL once live -->
+        <a class="focusable" href="#" style="display:inline-flex;align-items:center;gap:14px;background:#000;border:1px solid rgba(255,255,255,0.18);border-radius:15px;padding:14px 26px;cursor:pointer">
+          <svg viewBox="0 0 384 512" width="30" height="30" fill="#fff" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C61.5 141.2 0 184.4 0 272.1c0 25.9 4.7 52.7 14.2 80.3 12.6 36.4 58 125.6 105.4 124.1 24.8-.6 42.3-17.6 74.5-17.6 31.3 0 47.5 17.6 76.4 17.6 47.8-.7 88.8-81.7 100.8-118.2-64.1-30.2-60.9-88.5-60.9-89.6zM254.6 84.4c30.9-36.7 28.1-70.1 27.2-82.1-26.4 1.5-56.9 18-74.3 38.3-19.2 21.7-30.5 48.5-28.1 77.5 28.5 2.2 54.5-12.5 75.2-33.7z"/></svg>
+          <div style="text-align:left;line-height:1.05"><div style="font-size:12px;color:#cfd6df">Download on the</div><div style="font-size:23px;font-weight:600">App Store</div></div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ░░░░░ FOOTER ░░░░░ -->
+  <div style="border-top:1px solid rgba(255,255,255,0.06)">
+    <div style="max-width:1180px;margin:0 auto;padding:34px 28px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px">
+      <div style="display:flex;align-items:center;gap:11px">
+        <img src="logo.png" alt="Animal AI logo" width="34" height="34" style="width:34px;height:34px;border-radius:10px;display:block">
+        <span style="font-size:15px;font-weight:800">Animal AI</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:24px;font-size:13.5px;color:#A0AEC0;font-weight:600">
+        <a class="focusable" href="privacy.html" style="cursor:pointer">Privacy</a>
+        <a class="focusable" href="terms.html" style="cursor:pointer">Terms</a>
+        <a class="focusable" href="support.html" style="cursor:pointer">Support</a>
+        <a class="focusable" href="mailto:valtitech78@gmail.com" style="cursor:pointer">Contact</a>
+      </div>
+      <div style="font-size:13px;color:#3a4450">© 2026 Animal AI. All rights reserved.</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
